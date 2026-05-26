@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'registro_screen.dart';
-import 'login_screen.dart';
 
-class WelcomeScreen extends StatelessWidget {
+  class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
 
   @override
@@ -14,11 +12,12 @@ class WelcomeScreen extends StatelessWidget {
             children: [
               const SizedBox(height: 50),
 
-              Image.asset('assets/logo_stressting.png', height: 100),
-              const Text(
-                'Stressting',
-                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-              ),
+              Image.asset('assets/logo_stressting.png', height: 300),
+
+              //const Text(
+                //'Stressting',
+                //style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+              //),
 
               // Descripcion
               const Padding(
@@ -41,8 +40,8 @@ class WelcomeScreen extends StatelessWidget {
 
                 child: Column(
                   children: [
-                    const Text("Bienvenido", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
-                    const Text('a la app de bienestar y equilibrio'),
+                    const Text("Bienvenido", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
+                    const Text('A la app de bienestar y equilibrio'),
                     const SizedBox(height: 30),
 
                     // Login
@@ -51,12 +50,10 @@ class WelcomeScreen extends StatelessWidget {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(backgroundColor: Colors.blue[300]),
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const LoginScreen()),
-                            );
+                            Navigator.pushNamed(context, '/login');
                           },
-                        child: const Text('Iniciar Sesion'),
+                        child: const Text('Iniciar Sesion',
+                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                       ),
                     ),
 
@@ -68,12 +65,10 @@ class WelcomeScreen extends StatelessWidget {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(backgroundColor: Colors.green[300]),
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const RegistroScreen()),
-                            );
+                            Navigator.pushNamed(context, '/registro');
                           },
-                        child: const Text('Registro'),
+                        child: const Text('Registro',
+                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                       ),
                     )
                   ],

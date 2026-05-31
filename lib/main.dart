@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:stressting/screens/seguimiento_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -23,7 +24,6 @@ void main() async {
     (e);
     //print("Error: No se pudo cargar el archivo .env: $e");
   }
-
   //print("URL Cargada: '${dotenv.env['SUPABASE_URL']}'");
 
   await Supabase.initialize(
@@ -41,26 +41,28 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Stressting',
-        initialRoute: '/welcome',
-        routes: {
-          '/welcome': (context) => const WelcomeScreen(),
-          '/login': (context) => const LoginScreen(),
-          '/registro': (context) => const RegistroScreen(),
-          '/home': (context) => const HomeScreen(),
-          '/profile': (context) => const ProfileScreen(),
-          '/infoEstres': (context) => const InfoEstresScreen(),
-          '/sitiosWeb': (context) => const SitiosWebScreen(),
-          '/diagnostico': (context) => const DiagnosticoScreen(),
-          '/instituciones': (context) => const InstitucionesScreen(),
-          '/recomendaciones': (context) => const RecommendationsScreen(),
-          '/seguimiento': (context) => const SeguimientoScreen(),
-        },
+      initialRoute: '/welcome',
+      routes: {
+        '/welcome': (context) => const WelcomeScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/registro': (context) => const RegistroScreen(),
+        '/home': (context) => const HomeScreen(),
+        '/profile': (context) => const ProfileScreen(),
+        '/infoEstres': (context) => const InfoEstresScreen(),
+        '/sitiosWeb': (context) => const SitiosWebScreen(),
+        '/diagnostico': (context) => const DiagnosticoScreen(),
+        '/instituciones': (context) => const InstitucionesScreen(),
+        '/recomendaciones': (context) => const RecommendationsScreen(),
+        '/seguimiento': (context) => const SeguimientoScreen(),
+      },
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
         useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        textTheme: GoogleFonts.montserratTextTheme(
+          Theme.of(context).textTheme,
+        ),
       ),
     );
   }
 }
-

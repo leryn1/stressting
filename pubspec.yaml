@@ -44,7 +44,7 @@ dependencies:
   fl_chart: ^0.70.0
 
   # Diseño y utilidades
-  google_fonts: ^6.1.0
+  google_fonts: ^8.1.0
   intl: ^0.19.0 # Manejo de fechas en diagnosticos
 
   # The following adds the Cupertino Icons font to your application.

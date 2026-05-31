@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
-import '/widgets/customAppBar.dart';
+import '../widgets/customAppBar.dart';
 
 class SeguimientoScreen extends StatefulWidget {
   const SeguimientoScreen({super.key});
@@ -53,10 +53,22 @@ class _SeguimientoScreenState extends State<SeguimientoScreen> {
             Row(
               children: [
                 TextButton(
-                  onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst),
-                  child: const Text("Inicio", style: TextStyle(color: Colors.black54, fontSize: 20)),
+                  onPressed: () =>
+                      Navigator.of(context).popUntil((route) => route.isFirst),
+                  child: const Text(
+                    "Inicio",
+                    style: TextStyle(color: Colors.black54, fontSize: 20),
+                  ),
                 ),
-                const Text("Seguimiento", style: TextStyle(color: Colors.indigo, fontWeight: FontWeight.bold, fontSize: 20)),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/profile');
+                  },
+                  child: const Text(
+                    "Perfil",
+                    style: TextStyle(color: Colors.black54, fontSize: 20),
+                  ),
+                ),
               ],
             ),
             Image.asset('assets/logo_stressting.png', height: 65),
@@ -66,23 +78,29 @@ class _SeguimientoScreenState extends State<SeguimientoScreen> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            const Text(
-              "Seguimiento",
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.orange),
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  const Text(
+                    "Seguimiento",
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.orange,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  _buildGraficaContainer(),
+
+                  const SizedBox(height: 30),
+
+                  ..._historial.reversed.map(
+                    (test) => _buildResultadoItem(test),
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 20),
-
-            _buildGraficaContainer(),
-
-            const SizedBox(height: 30),
-
-            ..._historial.reversed.map((test) => _buildResultadoItem(test)),
-          ],
-        ),
-      ),
     );
   }
 
@@ -101,9 +119,15 @@ class _SeguimientoScreenState extends State<SeguimientoScreen> {
           gridData: const FlGridData(show: false),
           titlesData: FlTitlesData(
             show: true,
-            rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-            topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-            leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            rightTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
+            topTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
+            leftTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
             bottomTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: true,
@@ -112,10 +136,15 @@ class _SeguimientoScreenState extends State<SeguimientoScreen> {
                 getTitlesWidget: (value, meta) {
                   int index = value.toInt();
                   if (index >= 0 && index < _historial.length) {
-                    DateTime fecha = DateTime.parse(_historial[index]['creado_el']);
+                    DateTime fecha = DateTime.parse(
+                      _historial[index]['creado_el'],
+                    );
                     return Text(
                       "${fecha.day}/${fecha.month}",
-                      style: const TextStyle(fontSize: 12, color: Colors.black54),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.black54,
+                      ),
                     );
                   }
                   return const SizedBox();
@@ -127,15 +156,16 @@ class _SeguimientoScreenState extends State<SeguimientoScreen> {
           lineBarsData: [
             LineChartBarData(
               spots: _historial.asMap().entries.map((e) {
-                return FlSpot(e.key.toDouble(), e.value['puntaje_total'].toDouble());
+                return FlSpot(
+                  e.key.toDouble(),
+                  e.value['puntaje_total'].toDouble(),
+                );
               }).toList(),
               isCurved: true,
               color: Colors.black, // Color del grafico
               barWidth: 4,
               isStrokeCapRound: true,
-              dotData: const FlDotData(
-                show: true,
-              ),
+              dotData: const FlDotData(show: true),
               belowBarData: BarAreaData(
                 show: true,
                 color: Colors.indigo.withOpacity(0.2),
@@ -172,7 +202,10 @@ class _SeguimientoScreenState extends State<SeguimientoScreen> {
             children: [
               Text(
                 "Estrés ${test['nivel_estres']}",
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
               Text(
                 fechaFormateada,
@@ -183,6 +216,5 @@ class _SeguimientoScreenState extends State<SeguimientoScreen> {
         ],
       ),
     );
-
   }
 }

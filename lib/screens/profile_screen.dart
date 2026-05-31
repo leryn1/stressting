@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as img;
-import '/widgets/customAppBar.dart';
+import '../widgets/customAppBar.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -111,24 +111,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
     try {
       final userId = supabase.auth.currentUser!.id;
 
-      await supabase.from('profiles').update({
-        'nombre': _nombreController.text,
-        'edad': int.tryParse(_edadController.text),
-        'sexo': _sexoController.text,
-        'genero': _generoController.text,
-        'rh': _rhController.text,
-        'celular': _celularController.text,
-        'contacto_emergencia_nombre': _emergenciaNombreController.text,
-        'contacto_emergencia_telefono': _emergenciaTelController.text,
-      }).eq('id', userId).select();
+      await supabase
+          .from('profiles')
+          .update({
+            'nombre': _nombreController.text,
+            'edad': int.tryParse(_edadController.text),
+            'sexo': _sexoController.text,
+            'genero': _generoController.text,
+            'rh': _rhController.text,
+            'celular': _celularController.text,
+            'contacto_emergencia_nombre': _emergenciaNombreController.text,
+            'contacto_emergencia_telefono': _emergenciaTelController.text,
+          })
+          .eq('id', userId)
+          .select();
 
       if (_userData?['es_udg'] == true) {
         try {
-          await supabase.from('udg_data').update({
-            'ciclo': _cicloController.text,
-            'carrera': _carreraController.text,
-            'centro_universitario': _centroController.text,
-          }).eq('id', userId);
+          await supabase
+              .from('udg_data')
+              .update({
+                'ciclo': _cicloController.text,
+                'carrera': _carreraController.text,
+                'centro_universitario': _centroController.text,
+              })
+              .eq('id', userId);
         } catch ($e) {
           ($e);
         }
@@ -161,8 +168,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
       builder: (context) => SafeArea(
         child: Wrap(
           children: [
-            ListTile(leading: const Icon(Icons.camera_alt), title: const Text('Cámara'), onTap: () => Navigator.pop(context, ImageSource.camera)),
-            ListTile(leading: const Icon(Icons.photo_library), title: const Text('Galería'), onTap: () => Navigator.pop(context, ImageSource.gallery)),
+            ListTile(
+              leading: const Icon(Icons.camera_alt),
+              title: const Text('Cámara'),
+              onTap: () => Navigator.pop(context, ImageSource.camera),
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_library),
+              title: const Text('Galería'),
+              onTap: () => Navigator.pop(context, ImageSource.gallery),
+            ),
           ],
         ),
       ),
@@ -182,19 +197,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
       img.Image resized = img.copyResize(decoded, width: 250, height: 250);
       final finalImage = img.encodeJpg(resized);
 
-      final fileName = '${user.id}_${DateTime.now().millisecondsSinceEpoch}.jpg';
-      await supabase.storage.from('avatars').uploadBinary(
-        fileName,
-        finalImage,
-        fileOptions: const FileOptions(upsert: true, contentType: 'image/jpeg'),
-      );
+      final fileName =
+          '${user.id}_${DateTime.now().millisecondsSinceEpoch}.jpg';
+      await supabase.storage
+          .from('avatars')
+          .uploadBinary(
+            fileName,
+            finalImage,
+            fileOptions: const FileOptions(
+              upsert: true,
+              contentType: 'image/jpeg',
+            ),
+          );
 
-      final String publicUrl = supabase.storage.from('avatars').getPublicUrl(fileName);
-      await supabase.from('profiles').update({'avatar_url': publicUrl}).eq('id', user.id);
+      final String publicUrl = supabase.storage
+          .from('avatars')
+          .getPublicUrl(fileName);
+      await supabase
+          .from('profiles')
+          .update({'avatar_url': publicUrl})
+          .eq('id', user.id);
 
       setState(() => _avatarUrl = publicUrl);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error: $e")));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Error: $e")));
     } finally {
       setState(() => _isLoading = false);
     }
@@ -202,7 +230,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    if (_isLoading)
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
 
     return Scaffold(
       backgroundColor: const Color(0xFFF0F4FF),
@@ -212,24 +241,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             _isEditing
                 ? IconButton(
-              icon: const Icon(Icons.close, color: Colors.red, size: 28),
-              onPressed: () => setState(() {
-                _isEditing = false;
-                _fillControllers(_userData!);
-              }),
-            )
+                    icon: const Icon(Icons.close, color: Colors.red, size: 28),
+                    onPressed: () => setState(() {
+                      _isEditing = false;
+                      _fillControllers(_userData!);
+                    }),
+                  )
                 : Row(
-              children: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text("Inicio", style: TextStyle(color: Colors.black54, fontSize: 20)),
-                ),
-                const Text("Perfil", style: TextStyle(color: Colors.indigo, fontWeight: FontWeight.bold, fontSize: 20)),
-              ],
-            ),
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/home');
+                        },
+                        child: const Text(
+                          "Inicio",
+                          style: TextStyle(color: Colors.black54, fontSize: 20),
+                        ),
+                      ),
+                      const Text(
+                        "Perfil",
+                        style: TextStyle(
+                          color: Colors.indigo,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ],
+                  ),
             IconButton(
-              icon: Icon(_isEditing ? Icons.check_circle : Icons.edit,
-                  color: _isEditing ? Colors.green : Colors.indigo, size: 32),
+              icon: Icon(
+                _isEditing ? Icons.check_circle : Icons.edit,
+                color: _isEditing ? Colors.green : Colors.indigo,
+                size: 32,
+              ),
               onPressed: () {
                 if (_isEditing) {
                   _saveProfile();
@@ -246,7 +290,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           children: [
             const SizedBox(height: 30),
-            const Text("Mi Perfil", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.orange)),
+            const Text(
+              "Mi Perfil",
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.orange,
+              ),
+            ),
             const SizedBox(height: 25),
 
             Stack(
@@ -254,8 +305,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 CircleAvatar(
                   radius: 65,
                   backgroundColor: const Color(0xFFD1D9FF),
-                  backgroundImage: _avatarUrl != null ? NetworkImage(_avatarUrl!) : null,
-                  child: _avatarUrl == null ? const Icon(Icons.person, size: 70, color: Colors.indigo) : null,
+                  backgroundImage: _avatarUrl != null
+                      ? NetworkImage(_avatarUrl!)
+                      : null,
+                  child: _avatarUrl == null
+                      ? const Icon(Icons.person, size: 70, color: Colors.indigo)
+                      : null,
                 ),
                 Positioned(
                   bottom: 5,
@@ -265,7 +320,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: const CircleAvatar(
                       backgroundColor: Colors.orange,
                       radius: 20,
-                      child: Icon(Icons.camera_alt, color: Colors.white, size: 20),
+                      child: Icon(
+                        Icons.camera_alt,
+                        color: Colors.white,
+                        size: 20,
+                      ),
                     ),
                   ),
                 ),
@@ -275,8 +334,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             _buildSectionHeader("Datos personales"),
             _buildField("Nombre", _nombreController, Icons.person_outline),
-            _buildInfoRow("Email:", _userData?['email'] ?? 'N/A', Icons.email_outlined),
-            _buildField("Edad", _edadController, Icons.calendar_today, isNumber: true),
+            _buildInfoRow(
+              "Email:",
+              _userData?['email'] ?? 'N/A',
+              Icons.email_outlined,
+            ),
+            _buildField(
+              "Edad",
+              _edadController,
+              Icons.calendar_today,
+              isNumber: true,
+            ),
             _buildField("Sexo", _sexoController, Icons.wc),
             _buildField("Género", _generoController, Icons.face),
             _buildField("RH", _rhController, Icons.bloodtype_outlined),
@@ -284,16 +352,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             const SizedBox(height: 25),
             _buildSectionHeader("Contacto de emergencia"),
-            _buildField("Nombre Emergencia", _emergenciaNombreController, Icons.contact_emergency_outlined),
-            _buildField("Tel. Emergencia", _emergenciaTelController, Icons.phone_enabled_outlined, isNumber: true),
+            _buildField(
+              "Nombre Emergencia",
+              _emergenciaNombreController,
+              Icons.contact_emergency_outlined,
+            ),
+            _buildField(
+              "Tel. Emergencia",
+              _emergenciaTelController,
+              Icons.phone_enabled_outlined,
+              isNumber: true,
+            ),
 
             if (_userData?['es_udg'] == true) ...[
               const SizedBox(height: 25),
               _buildSectionHeader("Datos UDG"),
-              _buildInfoRow("Código:", _userData?['udg_data']?['codigo']?.toString() ?? 'N/A', Icons.badge_outlined),
-              _buildField("Ciclo", _cicloController, Icons.calendar_today_outlined),
+              _buildInfoRow(
+                "Código:",
+                _userData?['udg_data']?['codigo']?.toString() ?? 'N/A',
+                Icons.badge_outlined,
+              ),
+              _buildField(
+                "Ciclo",
+                _cicloController,
+                Icons.calendar_today_outlined,
+              ),
               _buildField("Carrera", _carreraController, Icons.school_outlined),
-              _buildField("Centro Universitario", _centroController, Icons.account_balance_outlined),
+              _buildField(
+                "Centro Universitario",
+                _centroController,
+                Icons.account_balance_outlined,
+              ),
             ],
 
             const SizedBox(height: 40),
@@ -306,9 +395,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 onPressed: () async {
                   await supabase.auth.signOut();
-                  if (mounted) Navigator.pushReplacementNamed(context, '/welcome');
+                  if (mounted)
+                    Navigator.pushReplacementNamed(context, '/welcome');
                 },
-                child: const Text("CERRAR SESIÓN", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                child: const Text(
+                  "CERRAR SESIÓN",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             const SizedBox(height: 40),
           ],
@@ -317,22 +413,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildField(String label, TextEditingController controller, IconData icon, {bool isNumber = false}) {
+  Widget _buildField(
+    String label,
+    TextEditingController controller,
+    IconData icon, {
+    bool isNumber = false,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: _isEditing
           ? TextField(
-        controller: controller,
-        keyboardType: isNumber ? TextInputType.number : TextInputType.text,
-        decoration: InputDecoration(
-          labelText: label,
-          prefixIcon: Icon(icon, size: 20),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-          filled: true,
-          fillColor: Colors.white,
-        ),
-      )
-          : _buildInfoRow("$label:", controller.text.isEmpty ? 'N/A' : controller.text, icon),
+              controller: controller,
+              keyboardType: isNumber
+                  ? TextInputType.number
+                  : TextInputType.text,
+              decoration: InputDecoration(
+                labelText: label,
+                prefixIcon: Icon(icon, size: 20),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                filled: true,
+                fillColor: Colors.white,
+              ),
+            )
+          : _buildInfoRow(
+              "$label:",
+              controller.text.isEmpty ? 'N/A' : controller.text,
+              icon,
+            ),
     );
   }
 
@@ -343,9 +452,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           Icon(icon, size: 22, color: Colors.indigo.withOpacity(0.7)),
           const SizedBox(width: 12),
-          Text(label, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black54)),
+          Text(
+            label,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.black54,
+            ),
+          ),
           const SizedBox(width: 10),
-          Expanded(child: Text(value, style: const TextStyle(color: Colors.black87, fontSize: 16))),
+          Expanded(
+            child: Text(
+              value,
+              style: const TextStyle(color: Colors.black87, fontSize: 16),
+            ),
+          ),
         ],
       ),
     );
@@ -355,7 +475,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.indigo)),
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.indigo,
+          ),
+        ),
         const Divider(color: Colors.orange, thickness: 1.5),
         const SizedBox(height: 10),
       ],

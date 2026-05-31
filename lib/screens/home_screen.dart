@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '/widgets/customAppBar.dart';
-import '/widgets/action_button.dart';
+import '../widgets/customAppBar.dart';
+import '../widgets/action_button.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -17,14 +17,23 @@ class HomeScreen extends StatelessWidget {
               children: [
                 TextButton(
                   onPressed: () {},
-                  child: const Text("Inicio",
-                      style: TextStyle(color: Colors.indigo, fontWeight: FontWeight.bold, fontSize: 20)),
+                  child: const Text(
+                    "Inicio",
+                    style: TextStyle(
+                      color: Colors.indigo,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
                 ),
                 TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, '/profile');
                   },
-                  child: const Text("Perfil", style: TextStyle(color: Colors.black54, fontSize: 20)),
+                  child: const Text(
+                    "Perfil",
+                    style: TextStyle(color: Colors.black54, fontSize: 20),
+                  ),
                 ),
               ],
             ),
@@ -37,9 +46,19 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 20),
-              const Text("Inicio", style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.orange)),
+              const Text(
+                "Inicio",
+                style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.orange,
+                ),
+              ),
               const SizedBox(height: 18),
-              const Text("¿Qué es el estrés?", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+              const Text(
+                "¿Qué es el estrés?",
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 child: Text(
@@ -51,47 +70,52 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 20),
 
               ActionButton(
-                text: "+ Informacion Del Estres",
-                color: const Color(0xFF99CC33),
+                text: "+ Información Del Estrés",
+                color: const Color(0xFF92D050),
                 onPressed: () {
                   Navigator.pushNamed(context, '/infoEstres');
-                }
+                },
               ),
               ActionButton(
-                text: "Realizar Diagnostico",
-                color: const Color(0xFF90CAF9),
-                onPressed: () => {Navigator.pushNamed(context, '/diagnostico')}
+                text: "Realizar Diagnóstico",
+                color: const Color(0xFF8AC2FE),
+                onPressed: () => {Navigator.pushNamed(context, '/diagnostico')},
               ),
               ActionButton(
                 text: "Instituciones de Apoyo",
-                color: const Color(0xFF99CC33),
+                color: const Color(0xFF92D050),
                 onPressed: () {
                   Navigator.pushNamed(context, '/instituciones');
                 },
               ),
               ActionButton(
                 text: "Recomendaciones",
-                color: const Color(0xFF90CAF9),
+                color: const Color(0xFF8AC2FE),
                 onPressed: () {
                   Navigator.pushNamed(context, '/recomendaciones');
                 },
               ),
               ActionButton(
                 text: "Seguimiento",
-                color: const Color(0xFF99CC33),
+                color: const Color(0xFF92D050),
                 onPressed: () {
                   Navigator.pushNamed(context, '/seguimiento');
                 },
               ),
               ActionButton(
                 text: "Comentarios",
-                color: const Color(0xFF90CAF9),
+                color: const Color(0xFF8AC2FE),
                 onPressed: () {},
               ),
 
               const SizedBox(height: 40),
-              const Text("Permite sentir paz y tranquilidad",
-                  style: TextStyle(fontStyle: FontStyle.italic, color: Colors.indigo)),
+              const Text(
+                "Permite sentir paz y tranquilidad",
+                style: TextStyle(
+                  fontStyle: FontStyle.italic,
+                  color: Colors.indigo,
+                ),
+              ),
               const SizedBox(height: 20),
             ],
           ),

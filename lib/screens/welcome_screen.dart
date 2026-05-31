@@ -23,7 +23,8 @@ class WelcomeScreen extends StatelessWidget {
             const Padding(
               padding: EdgeInsets.all(30.0),
               child: Text(
-                'Esta aplicación está diseñada para realizar un diagnóstico con el uso de la Escala de Estrés Percibido (EEP).',
+                'Esta aplicación está diseñada para realizar un diagnóstico con el uso de la Escala de Estrés Percibido (EEP).'
+                    ' Asimismo, contar con algunas opciones de apoyo.',
                 textAlign: TextAlign.center,
               ),
             ),
@@ -44,7 +45,7 @@ class WelcomeScreen extends StatelessWidget {
               child: Column(
                 children: [
                   const Text(
-                    "Bienvenido",
+                    "B I E N V E N I D O",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                   ),
                   const Text('A la app de bienestar y equilibrio'),
@@ -55,7 +56,7 @@ class WelcomeScreen extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue[300],
+                        backgroundColor: const Color(0xFF8AC2FE),
                       ),
                       onPressed: () {
                         Navigator.pushNamed(context, '/login');
@@ -77,7 +78,7 @@ class WelcomeScreen extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green[300],
+                        backgroundColor: const Color(0xFF92D050),
                       ),
                       onPressed: () {
                         Navigator.pushNamed(context, '/registro');

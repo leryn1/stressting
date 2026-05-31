@@ -24,12 +24,21 @@ class InfoEstresScreen extends StatelessWidget {
             Row(
               children: [
                 TextButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/home');
+                  },
                   child: const Text("Inicio",
                       style: TextStyle(color: Colors.black54, fontSize: 20)),
                 ),
-                const Text("Información",
-                    style: TextStyle(color: Colors.indigo, fontWeight: FontWeight.bold, fontSize: 20)),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/profile');
+                  },
+                  child: const Text(
+                    "Perfil",
+                    style: TextStyle(color: Colors.black54, fontSize: 20),
+                  ),
+                ),
               ],
             ),
             Image.asset('assets/logo_stressting.png', height: 65),
@@ -115,7 +124,7 @@ class InfoEstresScreen extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
-            color: const Color(0xFFDBE8FF), // Tu azul claro de fondo
+            color: const Color(0xFFDBE8FF),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: Colors.indigo.withOpacity(0.1)),
           ),

@@ -84,12 +84,13 @@ class ResultadoScreen extends StatelessWidget {
                     style: TextStyle(color: Colors.black54, fontSize: 20),
                   ),
                 ),
-                const Text(
-                  "Resultado",
-                  style: TextStyle(
-                    color: Colors.indigo,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/profile');
+                  },
+                  child: const Text(
+                    "Perfil",
+                    style: TextStyle(color: Colors.black54, fontSize: 20),
                   ),
                 ),
               ],
@@ -150,7 +151,7 @@ class ResultadoScreen extends StatelessWidget {
                   Expanded(
                     child: _buildActionButton(
                       "INSTITUCIONES\nDE APOYO",
-                      const Color(0xFF99CC33),
+                      const Color(0xFF92D050),
                       () => Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -163,7 +164,7 @@ class ResultadoScreen extends StatelessWidget {
                   Expanded(
                     child: _buildActionButton(
                       "INICIO",
-                      const Color(0xFF90CAF9),
+                      const Color(0xFF8AC2FE),
                       () => Navigator.of(
                         context,
                       ).popUntil((route) => route.isFirst),
@@ -191,7 +192,7 @@ class ResultadoScreen extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
       decoration: BoxDecoration(
         color: const Color(0xFF1A237E),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
         nivel.toUpperCase(),

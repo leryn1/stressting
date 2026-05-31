@@ -57,7 +57,15 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
                     onPressed: () => Navigator.pop(context),
                     child: const Text("Inicio", style: TextStyle(color: Colors.black54, fontSize: 20))
                 ),
-                const Text("Recomendaciones", style: TextStyle(color: Colors.indigo, fontWeight: FontWeight.bold, fontSize: 20)),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/profile');
+                  },
+                  child: const Text(
+                    "Perfil",
+                    style: TextStyle(color: Colors.black54, fontSize: 20),
+                  ),
+                ),
               ],
             ),
             Image.asset('assets/logo_stressting.png', height: 65),

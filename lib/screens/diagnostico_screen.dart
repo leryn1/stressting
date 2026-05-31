@@ -30,7 +30,9 @@ class _DiagnosticoScreenState extends State<DiagnosticoScreen> {
     PreguntaEEP(
       "2. ¿Con qué frecuencia se ha sentido incapaz de controlar las cosas importantes en su vida?",
     ),
-    PreguntaEEP("3. ¿Con qué frecuencia se ha sentido nervioso o estresado?"),
+    PreguntaEEP(
+        "3. ¿Con qué frecuencia se ha sentido nervioso o estresado?"
+    ),
     PreguntaEEP(
       "4. ¿Con qué frecuencia ha estado seguro sobre su capacidad para manejar sus problemas personales?",
       esInversa: true,
@@ -211,7 +213,7 @@ class _DiagnosticoScreenState extends State<DiagnosticoScreen> {
                 curve: Curves.ease,
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF99CC33), // El verde del mockup
+                backgroundColor: const Color(0xFF92D050), // El verde del mockup
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 40,

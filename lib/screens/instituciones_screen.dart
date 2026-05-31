@@ -321,7 +321,7 @@ class _InstitucionesScreenState extends State<InstitucionesScreen> {
                   icon: const Icon(Icons.phone, size: 18),
                   label: const Text("LLAMAR"),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF99CC33), // Tu verde
+                    backgroundColor: const Color(0xFF92D050),
                     foregroundColor: Colors.white,
                     shape: const StadiumBorder(),
                   ),
@@ -334,7 +334,7 @@ class _InstitucionesScreenState extends State<InstitucionesScreen> {
                   icon: const Icon(Icons.location_on, size: 18),
                   label: const Text("UBICACIÓN"),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF90CAF9), // Tu azul
+                    backgroundColor: const Color(0xFF8AC2FE),
                     foregroundColor: Colors.white,
                     shape: const StadiumBorder(),
                   ),

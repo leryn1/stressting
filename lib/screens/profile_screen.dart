@@ -250,7 +250,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 : Row(
                     children: [
                       TextButton(
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/home');
+                        },
                         child: const Text(
                           "Inicio",
                           style: TextStyle(color: Colors.black54, fontSize: 20),

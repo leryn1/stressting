@@ -10,7 +10,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return PreferredSize(
       preferredSize: const Size.fromHeight(80),
       child: AppBar(
-        backgroundColor: const Color(0xFFDBE8FF),
+        backgroundColor: const Color(0xFFDEEAFF),
         elevation: 0,
         automaticallyImplyLeading: false,
         shape: const RoundedRectangleBorder(

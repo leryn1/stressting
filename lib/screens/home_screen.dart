@@ -71,40 +71,40 @@ class HomeScreen extends StatelessWidget {
 
               ActionButton(
                 text: "+ Información Del Estrés",
-                color: const Color(0xFF99CC33),
+                color: const Color(0xFF92D050),
                 onPressed: () {
                   Navigator.pushNamed(context, '/infoEstres');
                 },
               ),
               ActionButton(
                 text: "Realizar Diagnóstico",
-                color: const Color(0xFF90CAF9),
+                color: const Color(0xFF8AC2FE),
                 onPressed: () => {Navigator.pushNamed(context, '/diagnostico')},
               ),
               ActionButton(
                 text: "Instituciones de Apoyo",
-                color: const Color(0xFF99CC33),
+                color: const Color(0xFF92D050),
                 onPressed: () {
                   Navigator.pushNamed(context, '/instituciones');
                 },
               ),
               ActionButton(
                 text: "Recomendaciones",
-                color: const Color(0xFF90CAF9),
+                color: const Color(0xFF8AC2FE),
                 onPressed: () {
                   Navigator.pushNamed(context, '/recomendaciones');
                 },
               ),
               ActionButton(
                 text: "Seguimiento",
-                color: const Color(0xFF99CC33),
+                color: const Color(0xFF92D050),
                 onPressed: () {
                   Navigator.pushNamed(context, '/seguimiento');
                 },
               ),
               ActionButton(
                 text: "Comentarios",
-                color: const Color(0xFF90CAF9),
+                color: const Color(0xFF8AC2FE),
                 onPressed: () {},
               ),
 

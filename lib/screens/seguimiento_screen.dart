@@ -60,12 +60,13 @@ class _SeguimientoScreenState extends State<SeguimientoScreen> {
                     style: TextStyle(color: Colors.black54, fontSize: 20),
                   ),
                 ),
-                const Text(
-                  "Seguimiento",
-                  style: TextStyle(
-                    color: Colors.indigo,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/profile');
+                  },
+                  child: const Text(
+                    "Perfil",
+                    style: TextStyle(color: Colors.black54, fontSize: 20),
                   ),
                 ),
               ],

@@ -50,3 +50,4 @@ app.*.map.json
 # Llaves y contraseñas de firma para Android
 **/android/app/upload-keystore.jks
 **/android/key.properties
+upload-keystore.jks

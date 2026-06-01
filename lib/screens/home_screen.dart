@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../widgets/customAppBar.dart';
-import '../widgets/action_button.dart';
+import '/widgets/customAppBar.dart';
+import '/widgets/action_button.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -79,7 +79,9 @@ class HomeScreen extends StatelessWidget {
               ActionButton(
                 text: "Realizar Diagnóstico",
                 color: const Color(0xFF8AC2FE),
-                onPressed: () => {Navigator.pushNamed(context, '/diagnostico')},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/diagnostico');
+                },
               ),
               ActionButton(
                 text: "Instituciones de Apoyo",
@@ -105,15 +107,17 @@ class HomeScreen extends StatelessWidget {
               ActionButton(
                 text: "Comentarios",
                 color: const Color(0xFF8AC2FE),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/comentarios');
+                },
               ),
 
-              const SizedBox(height: 40),
+              const SizedBox(height: 30),
               const Text(
                 "Permite sentir paz y tranquilidad",
                 style: TextStyle(
                   fontStyle: FontStyle.italic,
-                  color: Colors.indigo,
+                  color: Colors.black54,
                 ),
               ),
               const SizedBox(height: 20),

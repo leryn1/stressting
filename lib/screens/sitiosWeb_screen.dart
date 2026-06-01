@@ -90,6 +90,8 @@ class SitiosWebScreen extends StatelessWidget {
                 }
             ),
             const SizedBox(height: 30),
+            const Text("Permite sentir paz y tranquilidad", style: TextStyle(fontSize: 14, color: Colors.black54, fontStyle: FontStyle.italic)),
+            const SizedBox(height: 10),
           ],
         ),
       ),

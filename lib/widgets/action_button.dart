@@ -15,7 +15,7 @@ class ActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 25),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 35),
       child: SizedBox(
         width: double.infinity,
         height: 55,
@@ -31,7 +31,7 @@ class ActionButton extends StatelessWidget {
             style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
-                fontSize: 18
+                fontSize: 16
             ),
           ),
         ),

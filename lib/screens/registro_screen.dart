@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // <--- CRUCIAL: Para usar los Formatters
+import 'package:flutter/services.dart';
 import 'package:stressting/screens/home_screen.dart';
+// IMPORTANTE: Asegúrate de ajustar estas rutas según el nombre de tu proyecto
+import 'package:stressting/widgets/custom_text_field.dart';
+import 'package:stressting/widgets/custom_dropdown_field.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:google_fonts/google_fonts.dart'; // Manteniendo tu estilo visual
 
 class RegistroScreen extends StatefulWidget {
   const RegistroScreen({super.key});
@@ -12,45 +14,58 @@ class RegistroScreen extends StatefulWidget {
 }
 
 class _RegistroScreenState extends State<RegistroScreen> {
-  // Clave global para validar el formulario completo de manera nativa
   final _formKey = GlobalKey<FormState>();
 
   final _nombreCtrl = TextEditingController();
   final _edadCtrl = TextEditingController();
   final _celularCtrl = TextEditingController();
-  final _generoCtrl = TextEditingController();
   final _emergenciaNombreCtrl = TextEditingController();
   final _emergenciaTelCtrl = TextEditingController();
   final _emailCtrl = TextEditingController();
   final _passwordCtrl = TextEditingController();
   final _codigoCtrl = TextEditingController();
   final _carreraCtrl = TextEditingController();
-  final _centroCtrl = TextEditingController();
   final _cicloCtrl = TextEditingController();
+  final _otroGeneroCtrl = TextEditingController();
 
-  String? _selectedRH;
-  final List<String> _opcionesRH = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+  String? _selectedTipoSangre;
+  final List<String> _opcionesTipoSangre = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+
+  String? _selectedGenero;
+  final List<String> _opcionesGenero = [
+    "Cisgénero", "Transgénero", "Hombre Trans", "Mujer Trans", "No binarix",
+    "Género Fluido", "Agénero", "Bigénero", "Demichico", "Demichica",
+    "Género Neutro", "Género Queer", "Andróginx", "Otro"
+  ];
+
+  String? _selectedCentro;
+  final List<String> _opcionesCentro = [
+    "CUCEA", "CUCSH", "CUAAD", "CUCBA", "CUGDL",
+    "CUCS", "CUCEI", "CUTLAQUE", "CUTONALA", "CUTLAJO"
+  ];
+
   String? _selectedSexo;
   bool _esUdg = false;
+  bool _mostrarEspecificarGenero = false;
 
   Future<void> _crearCuenta() async {
-    // Primero, validamos que todos los campos requeridos cumplan las condiciones
     if (!_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Por favor, corrige los campos marcados en rojo."),
-          backgroundColor: Colors.red,
-        ),
+        const SnackBar(content: Text("Por favor, corrige los campos marcados en rojo."), backgroundColor: Colors.red),
       );
       return;
     }
 
-    if (_selectedSexo == null || _selectedRH == null) {
+    if (_selectedSexo == null || _selectedTipoSangre == null || _selectedGenero == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Por favor, selecciona Sexo y Tipo de Sangre (RH)."),
-          backgroundColor: Colors.red,
-        ),
+        const SnackBar(content: Text("Por favor, selecciona Sexo, Género y Tipo de Sangre."), backgroundColor: Colors.red),
+      );
+      return;
+    }
+
+    if (_esUdg && _selectedCentro == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Por favor, selecciona tu Centro Universitario."), backgroundColor: Colors.red),
       );
       return;
     }
@@ -62,29 +77,30 @@ class _RegistroScreenState extends State<RegistroScreen> {
         builder: (context) => const Center(child: CircularProgressIndicator()),
       );
 
-      // 1. Registro en Supabase Auth
       final AuthResponse res = await Supabase.instance.client.auth.signUp(
         email: _emailCtrl.text.trim(),
         password: _passwordCtrl.text.trim(),
         data: {
           'nombre': _nombreCtrl.text.trim(),
-          'edad': int.tryParse(_edadCtrl.text.trim()) ?? 0, // Lo parseamos a número para tu DB
+          'edad': int.tryParse(_edadCtrl.text.trim()) ?? 0,
           'sexo': _selectedSexo,
-          'genero': _generoCtrl.text.trim().isEmpty ? 'N/A' : _generoCtrl.text.trim(),
-          'rh': _selectedRH,
+          'genero': _selectedGenero == "Otro"
+              ? (_otroGeneroCtrl.text.trim().isEmpty ? 'Otro' : _otroGeneroCtrl.text.trim())
+              : (_selectedGenero ?? 'N/A'),
+          'rh': _selectedTipoSangre,
           'celular': _celularCtrl.text.trim(),
           'emergencia_nombre': _emergenciaNombreCtrl.text.trim(),
           'emergencia_telefono': _emergenciaTelCtrl.text.trim(),
           'es_udg': _esUdg,
           'codigo': _esUdg ? _codigoCtrl.text.trim() : null,
           'carrera': _esUdg ? _carreraCtrl.text.trim() : null,
-          'centro': _esUdg ? _centroCtrl.text.trim() : null,
+          'centro': _esUdg ? _selectedCentro : null,
           'ciclo': _esUdg ? _cicloCtrl.text.trim() : null,
         },
       );
 
       if (!mounted) return;
-      Navigator.pop(context); // Cerramos el CircularProgressIndicator
+      Navigator.pop(context);
 
       if (res.user != null) {
         Navigator.pushAndRemoveUntil(
@@ -92,12 +108,8 @@ class _RegistroScreenState extends State<RegistroScreen> {
           MaterialPageRoute(builder: (context) => const HomeScreen()),
               (route) => false,
         );
-
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("¡Cuenta creada con éxito! Bienvenidx."),
-            backgroundColor: Color(0xFF689F38),
-          ),
+          const SnackBar(content: Text("¡Cuenta creada con éxito! Bienvenidx."), backgroundColor: Color(0xFF689F38)),
         );
       }
     } catch (e) {
@@ -119,28 +131,24 @@ class _RegistroScreenState extends State<RegistroScreen> {
         elevation: 0,
       ),
       body: Form(
-        key: _formKey, // Envolvemos todo en un widget Form para activar los validadores
+        key: _formKey,
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Datos Generales",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-              _buildTextField(
-                "Nombre *",
-                _nombreCtrl,
-                // Expresión Regular: Solo permite letras de la A-Z (mayúsculas, minúsculas, acentos y espacios)
+              const Text("Datos Generales", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+
+              CustomTextField(
+                label: "Nombre *",
+                controller: _nombreCtrl,
                 inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[a-zA-ZáéíóúÁÉÍÓÚñÑ ]'))],
                 validator: (val) => val!.trim().isEmpty ? "El nombre es obligatorio" : null,
               ),
-              _buildTextField(
-                "Edad *",
-                _edadCtrl,
+              CustomTextField(
+                label: "Edad *",
+                controller: _edadCtrl,
                 keyboardType: TextInputType.number,
-                // Solo números enteros directos
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 validator: (val) {
                   if (val!.trim().isEmpty) return "La edad es obligatoria";
@@ -149,21 +157,46 @@ class _RegistroScreenState extends State<RegistroScreen> {
                   return null;
                 },
               ),
-              _buildDropdown("Sexo *", ["Masculino", "Femenino", "Otro"],
-                      (val) => setState(() => _selectedSexo = val)),
-              _buildTextField(
-                "Género",
-                _generoCtrl,
-                hint: "Ej: No binarix, Transgénero, etc.",
-                inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[a-zA-ZáéíóúÁÉÍÓÚñÑ ]'))],
+              CustomDropdownField(
+                label: "Sexo *",
+                options: const ["Masculino", "Femenino", "Otro"],
+                currentValue: _selectedSexo,
+                onChanged: (val) => setState(() => _selectedSexo = val),
+                validator: (val) => val == null ? "El sexo es obligatorio" : null,
               ),
-              _buildDropdown("RH *", _opcionesRH,
-                      (val) => setState(() => _selectedRH = val)),
-              _buildTextField(
-                "Celular *",
-                _celularCtrl,
+              CustomDropdownField(
+                label: "Género *",
+                options: _opcionesGenero,
+                currentValue: _selectedGenero,
+                onChanged: (val) {
+                  setState(() {
+                    _selectedGenero = val;
+                    _mostrarEspecificarGenero = (val == "Otro");
+                  });
+                },
+                validator: (val) => val == null ? "El género es obligatorio" : null,
+              ),
+
+              if (_mostrarEspecificarGenero)
+                CustomTextField(
+                  label: "Especifica tu género *",
+                  controller: _otroGeneroCtrl,
+                  hint: "Ej: Trigénero",
+                  inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[a-zA-ZáéíóúÁÉÍÓÚñÑ ]'))],
+                  validator: (val) => (_mostrarEspecificarGenero && val!.trim().isEmpty) ? "Por favor especifica tu género" : null,
+                ),
+
+              CustomDropdownField(
+                label: "Tipo de Sangre (RH) *",
+                options: _opcionesTipoSangre,
+                currentValue: _selectedTipoSangre,
+                onChanged: (val) => setState(() => _selectedTipoSangre = val),
+                validator: (val) => val == null ? "El tipo de sangre es obligatorio" : null,
+              ),
+              CustomTextField(
+                label: "Celular *",
+                controller: _celularCtrl,
                 keyboardType: TextInputType.phone,
-                // Permite números de teléfono puros sin letras
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 validator: (val) {
                   if (val!.trim().isEmpty) return "El celular es obligatorio";
@@ -173,19 +206,17 @@ class _RegistroScreenState extends State<RegistroScreen> {
               ),
 
               const Divider(height: 40, thickness: 5),
-              const Text(
-                "Contacto de emergencia",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              _buildTextField(
-                "Nombre del contacto *",
-                _emergenciaNombreCtrl,
+              const Text("Contacto de emergencia", style: TextStyle(fontWeight: FontWeight.bold)),
+
+              CustomTextField(
+                label: "Nombre del contacto *",
+                controller: _emergenciaNombreCtrl,
                 inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[a-zA-ZáéíóúÁÉÍÓÚñÑ ]'))],
                 validator: (val) => val!.trim().isEmpty ? "Este campo es requerido" : null,
               ),
-              _buildTextField(
-                "Teléfono del contacto *",
-                _emergenciaTelCtrl,
+              CustomTextField(
+                label: "Teléfono del contacto *",
+                controller: _emergenciaTelCtrl,
                 keyboardType: TextInputType.phone,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 validator: (val) {
@@ -196,25 +227,22 @@ class _RegistroScreenState extends State<RegistroScreen> {
               ),
 
               const Divider(height: 40, thickness: 5),
-              const Text(
-                "Correo y Contraseña",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              _buildTextField(
-                "Email *",
-                _emailCtrl,
+              const Text("Correo y Contraseña", style: TextStyle(fontWeight: FontWeight.bold)),
+
+              CustomTextField(
+                label: "Email *",
+                controller: _emailCtrl,
                 keyboardType: TextInputType.emailAddress,
                 validator: (val) {
                   if (val!.trim().isEmpty) return "El email es obligatorio";
-                  // Validación estructurada de sintaxis de correo electrónico (RegEx estándar)
                   final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
                   if (!emailRegex.hasMatch(val.trim())) return "Ingresa un correo electrónico válido";
                   return null;
                 },
               ),
-              _buildTextField(
-                "Contraseña *",
-                _passwordCtrl,
+              CustomTextField(
+                label: "Contraseña *",
+                controller: _passwordCtrl,
                 obscureText: true,
                 validator: (val) {
                   if (val!.isEmpty) return "La contraseña es obligatoria";
@@ -232,36 +260,32 @@ class _RegistroScreenState extends State<RegistroScreen> {
               if (_esUdg) ...[
                 const Padding(
                   padding: EdgeInsets.only(top: 20),
-                  child: Text(
-                    "Datos Universitarios",
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
-                  ),
+                  child: Text("Datos Universitarios", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue)),
                 ),
-                _buildTextField(
-                  "Código *",
-                  _codigoCtrl,
+                CustomTextField(
+                  label: "Código *",
+                  controller: _codigoCtrl,
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   validator: (val) => (_esUdg && val!.trim().isEmpty) ? "El código es obligatorio" : null,
                 ),
-                _buildTextField(
-                  "Centro Universitario *",
-                  _centroCtrl,
-                  hint: "Ej: CUCEI, CUCEA...",
-                  inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[a-zA-ZáéíóúÁÉÍÓÚñÑ ]'))],
-                  validator: (val) => (_esUdg && val!.trim().isEmpty) ? "El centro universitario es obligatorio" : null,
+                CustomDropdownField(
+                  label: "Centro Universitario *",
+                  options: _opcionesCentro,
+                  currentValue: _selectedCentro,
+                  onChanged: (val) => setState(() => _selectedCentro = val),
+                  validator: (val) => (_esUdg && val == null) ? "El centro universitario es obligatorio" : null,
                 ),
-                _buildTextField(
-                  "Carrera *",
-                  _carreraCtrl,
+                CustomTextField(
+                  label: "Carrera *",
+                  controller: _carreraCtrl,
                   inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[a-zA-ZáéíóúÁÉÍÓÚñÑ ]'))],
                   validator: (val) => (_esUdg && val!.trim().isEmpty) ? "La carrera es obligatoria" : null,
                 ),
-                _buildTextField(
-                  "Ciclo *",
-                  _cicloCtrl,
+                CustomTextField(
+                  label: "Ciclo *",
+                  controller: _cicloCtrl,
                   hint: "Ej: 2026A",
-                  // Los ciclos llevan números y letras combinados, por lo que bloqueamos caracteres especiales raros
                   inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]'))],
                   validator: (val) => (_esUdg && val!.trim().isEmpty) ? "El ciclo es obligatorio" : null,
                 ),
@@ -272,10 +296,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF689F38),
-                    shape: const StadiumBorder(),
-                  ),
+                  style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF689F38), shape: const StadiumBorder()),
                   onPressed: _crearCuenta,
                   child: const Text("REGISTRO", style: TextStyle(color: Colors.white)),
                 ),
@@ -283,44 +304,6 @@ class _RegistroScreenState extends State<RegistroScreen> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  // REFACTORIZACIÓN: Añadimos soporte nativo para 'inputFormatters' y 'validator'
-  Widget _buildTextField(
-      String label,
-      TextEditingController? controller, {
-        TextInputType? keyboardType,
-        bool obscureText = false,
-        String? hint,
-        List<TextInputFormatter>? inputFormatters,
-        String? Function(String?)? validator,
-      }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: TextFormField(
-        controller: controller,
-        keyboardType: keyboardType,
-        obscureText: obscureText,
-        inputFormatters: inputFormatters, // Aplica el filtro en tiempo de escritura
-        validator: validator, // Dispara el aviso visual en rojo si está mal
-        decoration: InputDecoration(
-          labelText: label,
-          hintText: hint,
-          border: const UnderlineInputBorder(),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDropdown(String label, List<String> options, Function(String?) onChanged) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: DropdownButtonFormField<String>(
-        decoration: InputDecoration(labelText: label),
-        items: options.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
-        onChanged: onChanged,
       ),
     );
   }
@@ -336,9 +319,8 @@ class _RegistroScreenState extends State<RegistroScreen> {
     _emergenciaTelCtrl.dispose();
     _codigoCtrl.dispose();
     _carreraCtrl.dispose();
-    _centroCtrl.dispose();
     _cicloCtrl.dispose();
-    _generoCtrl.dispose();
+    _otroGeneroCtrl.dispose();
     super.dispose();
   }
 }

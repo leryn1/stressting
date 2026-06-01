@@ -260,10 +260,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       const Text(
                         "Perfil",
-                        style: TextStyle(
-                          color: Colors.indigo,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                        style: TextStyle(color: Colors.indigo, fontWeight: FontWeight.bold, fontSize: 20,
                         ),
                       ),
                     ],

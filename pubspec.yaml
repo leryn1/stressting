@@ -1,5 +1,6 @@
 name: stressting
-description: "Aplicacion stressting"
+description: "Stressting es una aplicacion movil multiplataforma que utiliza la Escala de Estres
+Percibido (EEP) para realizar un diagnostico de nivel de estres en base a preguntas de EEP-10."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -33,19 +34,19 @@ dependencies:
 
   # Bases de Datos y Autenticacion
   supabase_flutter: ^2.0.2
-  flutter_dotenv: ^5.1.0
+  flutter_dotenv: ^6.0.1
 
   # Imagenes de Perfil
   image_picker: ^1.0.7
-  image_cropper: ^8.0.0 # Forzar el recorde de 250x250 de imagen en perfil
+  image_cropper: ^12.2.1 # Forzar el recorde de 250x250 de imagen en perfil
   image: ^4.8.0
 
   # Graficos de Seguimiento
-  fl_chart: ^0.70.0
+  fl_chart: ^1.2.0
 
   # Diseño y utilidades
   google_fonts: ^8.1.0
-  intl: ^0.19.0 # Manejo de fechas en diagnosticos
+  intl: ^0.20.2 # Manejo de fechas en diagnosticos
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -55,6 +56,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  flutter_launcher_icons: ^0.14.4
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -103,3 +107,11 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/iconApp.png"
+  adaptive_icon_background: "#7CB3F5"
+  adaptive_icon_foreground: "assets/iconApp.png"
+  min_sdk_android: 21

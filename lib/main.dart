@@ -14,6 +14,7 @@ import 'screens/sitiosWeb_screen.dart';
 import 'screens/diagnostico_screen.dart';
 import 'screens/instituciones_screen.dart';
 import 'screens/recomendaciones_screen.dart';
+import 'screens/comentarios_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
         '/instituciones': (context) => const InstitucionesScreen(),
         '/recomendaciones': (context) => const RecommendationsScreen(),
         '/seguimiento': (context) => const SeguimientoScreen(),
+        '/comentarios': (context) => const ComentariosScreen(),
       },
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

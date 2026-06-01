@@ -22,24 +22,24 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
   // Mapa de contenido para Lectura y Ejercicios
   final Map<String, List<Map<String, String>>> categoryData = {
     "Lectura": [
-      {"titulo": "Manejo del tiempo", "url": "https://pau.edu/blog/time-management-for-students/"},
-      {"titulo": "Higiene del sueño", "url": "https://www.sleepfoundation.org/sleep-hygiene"},
-      {"titulo": "Superar el Procrastinar", "url": "https://www.psychologytoday.com/intl/basics/procrastination"},
+      {"titulo": "Gestión del Tiempo para el Estrés", "url": "https://www.psiquion.com/blog/gestion-del-tiempo-controlar-estres"},
+      {"titulo": "Higiene del sueño", "url": "https://www.veteranshealthlibrary.va.gov/spanish/diseasesconditions/sleep/142,41438ES_VA"},
+      {"titulo": "Estrategias para evitar Procrastinar", "url": "https://psicologiaymente.com/psicologia/estrategias-para-dejar-de-procrastinar"},
     ],
     "Ejercicios": [
-      {"titulo": "Respiración 4-7-8", "url": "https://youtu.be/1mR-H6Sre_g"},
+      {"titulo": "Tecnica de Respiración 4-7-8", "url": "https://youtu.be/EGO5m_DBzF8?"},
       {"titulo": "Relajación Muscular", "url": "https://youtu.be/ClqPtWzozXs"},
-      {"titulo": "Yoga en 5 minutos", "url": "https://youtu.be/s7Zp86lO4p0"},
+      {"titulo": "Yoga en 5 minutos", "url": "https://youtu.be/kuLpv3f7IHc"},
     ],
     "Música": [
-      {"titulo": "Lofi Hip Hop", "url": "https://youtu.be/jfKfPfyJRdk"},
+      {"titulo": "Lofi - Hip Hop", "url": "https://youtu.be/n61ULEU7CO0"},
       {"titulo": "Sonidos de Lluvia", "url": "https://youtu.be/mPZkdNFkNps"},
-      {"titulo": "Mozart Relajante", "url": "https://youtu.be/Rb0UmrreWZA"},
+      {"titulo": "Música de Mozart Relajante", "url": "https://youtu.be/-hU70woDseA"},
     ],
     "Videos": [
       {"titulo": "Naturaleza 4K", "url": "https://youtu.be/BHACKCNDMW8"},
       {"titulo": "Acuario Virtual", "url": "https://youtu.be/263Vb6xiifo"},
-      {"titulo": "Paisajes de Japón", "url": "https://youtu.be/7FgZGMdtsT0"},
+      {"titulo": "Técnicas de Relajación Visual", "url": "https://youtu.be/7FgZGMdtsT0"},
     ],
   };
 
@@ -54,8 +54,12 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
             Row(
               children: [
                 TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text("Inicio", style: TextStyle(color: Colors.black54, fontSize: 20))
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/home');
+                    },
+                    child: const Text(
+                        "Inicio",
+                        style: TextStyle(color: Colors.black54, fontSize: 20))
                 ),
                 TextButton(
                   onPressed: () {
@@ -97,7 +101,9 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
                   ? _buildMainGrid()
                   : _buildSubCategoryView(),
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 30),
+            const Text("Permite sentir paz y tranquilidad", style: TextStyle(fontSize: 14, color: Colors.black54, fontStyle: FontStyle.italic)),
+            const SizedBox(height: 10),
           ],
         ),
       ),

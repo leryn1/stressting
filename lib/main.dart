@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:stressting/screens/seguimiento_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
 import 'screens/welcome_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/login_screen.dart';
@@ -23,9 +22,7 @@ void main() async {
     await dotenv.load(fileName: ".env");
   } catch (e) {
     (e);
-    //print("Error: No se pudo cargar el archivo .env: $e");
   }
-  //print("URL Cargada: '${dotenv.env['SUPABASE_URL']}'");
 
   await Supabase.initialize(
     url: dotenv.env['SUPABASE_URL'] ?? '',

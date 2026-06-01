@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'resultado_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../widgets/customAppBar.dart';
-import '../widgets/question_card.dart';
+import '/widgets/customAppBar.dart';
+import '/widgets/question_card.dart';
 
 class DiagnosticoScreen extends StatefulWidget {
   const DiagnosticoScreen({super.key});

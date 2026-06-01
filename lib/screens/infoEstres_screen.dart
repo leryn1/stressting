@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../widgets/customAppBar.dart';
+import '/widgets/customAppBar.dart';
 import 'sitiosWeb_screen.dart';
 
 class InfoEstresScreen extends StatelessWidget {
